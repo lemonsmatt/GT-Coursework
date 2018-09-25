@@ -1,0 +1,186 @@
+<html>
+<head>
+<title>Computer Vision Project</title>
+<link href='http://fonts.googleapis.com/css?family=Nunito:300|Crimson+Text|Droid+Sans+Mono' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" title="Default" href="styles/github.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>  
+
+<link rel="stylesheet" href="highlighting/styles/default.css">
+<script src="highlighting/highlight.pack.js"></script>
+
+<style type="text/css">
+body {
+	margin: 0px;
+	width: 100%;
+	font-family: 'Crimson Text', serif;
+	font-size: 20px;
+	background: #fcfcfc;
+}
+h1 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 28px;
+	margin: 25px 0px 0px 0px;
+	text-transform: lowercase;
+
+}
+
+h2 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 32px;
+	margin: 15px 0px 35px 0px;
+	color: #333;	
+	word-spacing: 3px;
+}
+
+h3 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 26px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+h4 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 22px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+
+h5 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 18px;
+	margin: 10px 0px 10px 0px;
+	color: #111;
+	word-spacing: 2px;
+}
+
+p, li {
+	color: #444;
+}
+
+a {
+	color: #DE3737;
+}
+
+.container {
+	margin: 0px auto 0px auto;
+	width: 960px;
+}
+
+#header {
+	background: #333;
+	width: 100%;
+}
+
+#headersub {
+	color: #ccc;
+	width: 960px;
+	margin: 0px auto 0px auto;
+	padding: 20px 0px 20px 0px;
+}
+
+.chart {
+	width: 480px;
+}
+.lol {
+	font-size: 16px;
+	color: #888;
+	font-style: italic;
+}
+.sep {
+	height: 1px;
+	width: 100%;
+	background: #999;
+	margin: 20px 0px 20px 0px;
+}
+.footer{
+	font-size: 16px;
+}
+.latex {
+	width: 100%;
+}
+
+.latex img {
+	display: block;
+	margin: 0px auto 0px auto;
+}
+
+pre {
+	font-family: 'Droid Sans Mono';
+	font-size: 14px;
+}
+
+td img {
+  vertical-align: middle;
+}
+
+#contents a {
+}
+</style>
+<script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+</script>
+</head>
+<body>
+<div id="header" >
+<div id="headersub">
+<h1><span style="color: #DE3737">mlemons7</span></h1>
+</div>
+</div>
+<div class="container">
+
+<h2>Project 2: Local Feature Matching</h2>
+
+<h3>Interest Points Finding</h3>
+
+<p> 	Harris Corner detector was used to find possible interest points. The algoirthm for this operates on a sliding window. However, these sliding windows represent a lot of repeated actions, so I calculated the gradient, square gradients, and cornerness on a image wide scale. This speeds up the processing and simplifies the code, but still calculates the same items. I applied a small gaussian filter before the corner detector to blur the image to reduce the effect of large spikes in high frequencies. I also apply a gaussian filter afterwards to the calculated cornerness. This is a filter with a larger filter. This smooths the cornerness over a larger area in preperation for non-maxima suppression.</p>
+
+<img src="vis_dots_notre_dame.jpg" width="99%"/>
+
+
+<h3>Feature Calculation</h3>
+
+<p>	   SIFT was the feature type of choice. It uses 4x4 cells centered around the interest point. Each cell is subdivided into 8 bins based on orientation. The gradient magnitude of all pixels located within a cell is added to a bin based on its gradient orientation. I used imgradient to calculate the magnitude and orientation of the image. Blurring the image before finding these items using a feature_width/2 sized filter with a sigma of 4 was found to give ~10% increase in accuracy. The gaussian effectively smooths out spikes causing noise and other effects to have less affect on the gradient calculations. After binning, the final histogram was normalized, thersholded at 0.2 and then normalized again. This produce another ~10% gain in accuracy. This again reduced the effect strong spikes have on the overall value of the historgram.</p>
+<p>	   Previously for testing feature matching before writing the more complex SIFT feature, a simple 16x16 patch was used as the histogram. The change from a simple histogram to SIFT produced a staggering 20% increase in accuracy. The choice of histogram is very important to the viablity of the pipeline.   	</p>
+
+<h3>Feature Matching</h3>
+
+<p>	   To match features, nearest neightbor distance ratio test was used. The distance between all features in one image to the features in the other image were calculated and sorted. The smallest two distances were kept and used to calculate the NNDR which is d1/d2 where d1 is the smallest distance. One mistake that I made at first was using this directly as a confidence. This number goes down as the second closest feature moves farther away which means the feature at d1 is more likely the matching item thus higher confidence. 1 - d1/d2 was used as confidence instead. Finally, these confidences were thresholded to reduce the false positives. The threshold of 0.35 was used as it produces about 100 interest points being matched. This produces 81% accuracy with 108 interest points	</p>
+
+<img src="eval_notre_dame.jpg" width="99%"/>
+<img src="vis_arrows_notre_dame.jpg" width="99%"/>
+
+<h2>Additional Images</h2>
+<h3>Mount Rushmore</h3>
+
+<p> 84% accuary with 50 interest points. The similar color and overall smoothness in a lot of area resulted in much lower confidence in points found reducing the overall number of points. </p>
+<img src="vis_dots_rush.jpg" width="99%"/>
+<img src="eval_rush.jpg" width="99%"/>
+<img src="vis_arrows_rush.jpg" width="99%"/>
+
+<h3>Episcopal Gaudi</h3>
+
+<p> 10% accuracy with 39 interest points. The large change in scale greatly effect the pipelines ability to understand the difference between points. The confidence threshold was reduced to allow this many points through.</p>
+<img src="vis_dots_gaudi.jpg" width="99%"/>
+<img src="eval_gaudi.jpg" width="99%"/>
+<img src="vis_arrows_gaudi.jpg" width="99%"/>
+
+<h3>Zion Sign</h3>
+
+<p> It was not able to match many points. Please notice the small point on the hill in the background was matched. Overall the different scale along with oddly different saturation probably resulted in the failures.</p>
+<img src="vis_dots_zion.jpg" width="99%"/>
+<img src="vis_arrows_zion.jpg" width="99%"/>
+
+<h3>Pine Creek: Cathedral</h3>
+
+<img src="vis_dots_pineCreek.jpg" width="99%"/>
+<img src="vis_arrows_pineCreek.jpg" width="99%"/>
+
+</body>
+</html>

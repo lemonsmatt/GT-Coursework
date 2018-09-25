@@ -1,0 +1,206 @@
+<html>
+<head>
+<title>Deep Learning Project</title>
+<link href='http://fonts.googleapis.com/css?family=Nunito:300|Crimson+Text|Droid+Sans+Mono' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" title="Default" href="styles/github.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>  
+
+<link rel="stylesheet" href="highlighting/styles/default.css">
+<script src="highlighting/highlight.pack.js"></script>
+
+<style type="text/css">
+body {
+	margin: 0px;
+	width: 100%;
+	font-family: 'Crimson Text', serif;
+	font-size: 20px;
+	background: #fcfcfc;
+}
+h1 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 28px;
+	margin: 25px 0px 0px 0px;
+	text-transform: lowercase;
+
+}
+
+h2 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 32px;
+	margin: 15px 0px 35px 0px;
+	color: #333;	
+	word-spacing: 3px;
+}
+
+h3 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 26px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+h4 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 22px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+
+h5 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 18px;
+	margin: 10px 0px 10px 0px;
+	color: #111;
+	word-spacing: 2px;
+}
+
+p, li {
+	color: #444;
+}
+
+a {
+	color: #DE3737;
+}
+
+.container {
+	margin: 0px auto 0px auto;
+	width: 1160px;
+}
+
+#header {
+	background: #333;
+	width: 100%;
+}
+
+#headersub {
+	color: #ccc;
+	width: 960px;
+	margin: 0px auto 0px auto;
+	padding: 20px 0px 20px 0px;
+}
+
+.chart {
+	width: 480px;
+}
+.lol {
+	font-size: 16px;
+	color: #888;
+	font-style: italic;
+}
+.sep {
+	height: 1px;
+	width: 100%;
+	background: #999;
+	margin: 20px 0px 20px 0px;
+}
+.footer{
+	font-size: 16px;
+}
+.latex {
+	width: 100%;
+}
+
+.latex img {
+	display: block;
+	margin: 0px auto 0px auto;
+}
+
+pre {
+	font-family: 'Droid Sans Mono';
+	font-size: 14px;
+}
+
+table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+table td img {
+  text-align: center;
+  vertical-align: middle;
+}
+
+#contents a {
+}
+</style>
+<script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+</script>
+</head>
+<body>
+<div id="header" >
+<div id="headersub">
+<h1>Matthew Lemons </h1>
+</div>
+</div>
+<div class="container">
+
+<h2> Project 6 / Deep Learning</h2>
+
+<h3> Part 1: Training from Scatch </h3>
+<p> The initial network trained itself from scratch. This basic setup gave the great advantage of not having to design special alogrithms for the domain. However, this basic setup gave very low accuracy, in the twenties. With a few changes, this network was able to achieve 62% accuracy. </p>
+<p> The amount of training data greatly effects the accuracy of the network but generating massive amount of new data on the spot in addition to what you have is not always possible. So you can jitter the data you have to introduce additonal training data synethically created from the current set. In the project, I mirrored the images as the form of jittering. Each image in each batch was randomly decided to be mirror or not. This produced about 5% increase in accuracy </p>
+<p> Another way to improve the accuracy of the network is to zero-center the images. To calculate this, the average image of the entire dataset is calculated then subtracted from each image. This produced a large , ~15%, increase in accuacy largely seen in the first 20 epochs. </p>
+<p> Other source of error is that the network fits itself to the training data quickly resulting in it fitting the training data perfectly while the validation error is still high. To correct this a dropout layer is added directly before the final convolutional layer. This layer turns off network connections at random to reduce the ability of the network to fit the training data; however, it improves the ability to fit the validtion error. The test accuracy improved to around 57% at this point</p>
+<p> This project is refered to as deep learning; however, the initial network is very shallow. A deeper network would perform better while needing much more epochs to reach a steady state. An additional block of convolution, pool, and relu was added. Adjusting padding, stride and spatial resolution of the previous layer was required to make sure the data output of the system was correct. The final network description is below. In additon to adjusting the parameters to make sure the data output is correct. The data depth of the channels has to match. The final layer now receives 15 rather than 10 for example. This network performed roughly the same as before after a lot of ajustment of free parameters. It required much more time than before. </p>
+<center>
+<img src="part1_struct.jpg" width="50%"/>
+</center>
+<p> Now the network is deep, but the performance has not jumped. To improve it, batch normalization layers were added after each convolutional layer but the last one. This layer allowed the network ot learn much faster. This is shown in the more clear filters being learned in the first layer as seen below. With some tweaking of epoch count and other paramters, it was able to achieve 62% accuracy after 100 epochs and a learning rate of .001. </p>
+<center>
+<img src="part1_filters.jpg" width="50%"/>
+</center>
+<p> One thing that has been mentioned repeatedly is the the tuning of free parameters. Typically, this was number of epochs and learning rate. Until the dropout layer was added, the number of epochs stopped helping as the network would reacha a steady state once training error reached around 0%, so the main factor in those steps was the learning rate. Small learning rates resulted in massive training times while large learning rates caused massive spikes in error. The learning rate needs to be fine tuned after each change to the network or the changes can be masked. The number of epochs largely effect running time, but as seen in the graph below, the last 50 epochs saw a increase in accuracy of about 10%.</p> 
+<center>
+<img src="part1.jpg" width="100%"/>
+</center>
+
+
+<h3>Part 2: Fine Tuning Pre-trained Deep Network</h3>
+<p> In part two of the project, I fine tuned the VGG-F network to recognize the same images from the first part. I removed the final two layers and replaced them with new versions of themselves. fc8 was changed to have an output depth of 15 rather than 4096 to identify our 15 scenes. In addition, I added dropout layers directly before fc7 and fc8. For VGG-F to accept the images, they need to be resized to 224x224. In additon, VGG-F uses rgb images not grayscale, so each channel of the passed in image will be the same. Jittering is done the same. Finally, VGG-F provides an average image to use in normalization, so no mean image is calculated on the training data. With these changes the system, as shown below, can now be used to recognized the images. </p>
+
+<center>
+<img src="part2_struct1.jpg" width="75%"/>
+</center>
+<center>
+<img src="part2_struct2.jpg" width="35%"/>
+</center>
+<p> One additonal setting that can be change is how many layers to retrain. I tested the whole network and got 84%, and I test just the replaced layers and got 85% accuracy.The graphs are below. These are over 5 epochs with a learning rate of 0.0001. These accuracy are very similar which is likely due to the already high accuracy at the start of the test.</p>
+
+<h4> Whole Network </h4>
+
+<center>
+<img src="part2_whole.jpg" width="50%"/>
+</center>
+
+<h4> Replaced Layers </h4>
+
+<center>
+<img src="part2_replaced.jpg" width="50%"/>
+</center>
+
+<h3> Extra Credit: Human Sketch Recognition </h3>
+
+<center>
+<img src="sketch1.png" width="auto" height="30%"/>
+<img src="sketch2.png" width="auto" height="30%"/>
+<img src="sketch3.png" width="auto" height="30%"/>
+</center>
+
+<p> Using the same techniques as part2, human sketches can be identified as well as as the scenes from the previous parts. To do this, the network was rewired to output the size of the labels, 250, of the new dataset.  The given sketches were split into 250 categories. I split these into training and testing sets which gave 40 of each category in each set. Due to limitations of matlab (array size became too large), only 100 of the 250 labels were used during the test run below. 71% accuracy was achieved after 10 epochs. However, the trend shows that further improvement in the score can be achieved if it is left running</p>
+<center>
+<img src="ec_struct.jpg" width="75%"/>
+</center>
+<center>
+<img src="ec_struct2.jpg" width="35%"/>
+</center>
+
+<center>
+<img src="ec_whole.jpg" width="75%"/>
+</center>

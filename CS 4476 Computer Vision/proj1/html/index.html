@@ -1,0 +1,216 @@
+<html>
+<head>
+<title>Computer Vision Project</title>
+<link href='http://fonts.googleapis.com/css?family=Nunito:300|Crimson+Text|Droid+Sans+Mono' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" title="Default" href="styles/github.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>  
+
+<link rel="stylesheet" href="highlighting/styles/default.css">
+<script src="highlighting/highlight.pack.js"></script>
+
+<style type="text/css">
+body {
+	margin: 0px;
+	width: 100%;
+	font-family: 'Crimson Text', serif;
+	font-size: 20px;
+	background: #fcfcfc;
+}
+h1 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 28px;
+	margin: 25px 0px 0px 0px;
+	text-transform: lowercase;
+
+}
+
+h2 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 32px;
+	margin: 15px 0px 35px 0px;
+	color: #333;	
+	word-spacing: 3px;
+}
+
+h3 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 26px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+h4 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 22px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+
+h5 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 18px;
+	margin: 10px 0px 10px 0px;
+	color: #111;
+	word-spacing: 2px;
+}
+
+p, li {
+	color: #444;
+}
+
+a {
+	color: #DE3737;
+}
+
+.container {
+	margin: 0px auto 0px auto;
+	width: 960px;
+}
+
+#header {
+	background: #333;
+	width: 100%;
+}
+
+#headersub {
+	color: #ccc;
+	width: 960px;
+	margin: 0px auto 0px auto;
+	padding: 20px 0px 20px 0px;
+}
+
+.chart {
+	width: 480px;
+}
+.lol {
+	font-size: 16px;
+	color: #888;
+	font-style: italic;
+}
+.sep {
+	height: 1px;
+	width: 100%;
+	background: #999;
+	margin: 20px 0px 20px 0px;
+}
+.footer{
+	font-size: 16px;
+}
+.latex {
+	width: 100%;
+}
+
+.latex img {
+	display: block;
+	margin: 0px auto 0px auto;
+}
+
+pre {
+	font-family: 'Droid Sans Mono';
+	font-size: 14px;
+}
+
+td img {
+  vertical-align: middle;
+}
+
+#contents a {
+}
+</style>
+<script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+</script>
+</head>
+<body>
+<div id="header" >
+<div id="headersub">
+<h1><span style="color: #DE3737">Matthew Lemons</span></h1>
+</div>
+</div>
+<div class="container">
+
+<h2>Project 1: Image Filtering and Hybrid Images</h2>
+
+<p> The algorithm produced for general image filtering is relatively simple. It runs in O(RowImage*ColImage*RowFilter*ColImage) time. The algorithm iterates through each pixel of the image thus the RowImage*ColImage figure in the big O. At each pixel, it then uses the passed in filter to calculate the new pixel value. To do this, the top left corner of the overlayed portion of the image is found then from there each pixel is iterated over. Each iteration is simply multipling the pixel's value in the current channel by the matching value in the filter matrix. The sum of each of these operations is the new value in the current pixel. There is one big edge case not covered right. What happens when part of the filter is out of the bounds of the image? This is handled in the code by ignoring those pixels within the filter loops. This reduces the load and complexity as no padding or other gymnastics have to occur for the algorithm to proceed when reaching the edges of the image. As far as the algorithm is concerned, this is the same as treating them as pixels with the value zero. </p>
+
+
+<h3>Algoirthm in Action</h3>
+
+<table border=1>
+<tr>
+<td>
+<img src="identity_image.jpg" width="49.5%"/>
+<img src="large_blur_image.jpg"  width="49.5%"/>
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="sobel_image.jpg"  width="49.5%"/>
+<img src="laplacian_image.jpg" width="49.5%"/>
+</td>
+</tr>
+
+</table>
+
+<div style="clear:both" >
+<p>The hybrid image is produced by combining the low frequencies of one image and the high frequencies of another image. These are produced using a gaussian filter to remove high frequencies. To get a high frequency filtered image, subtract the low frequency image from the original image. These two images simply added together to produce the hybrid image. See below for the process</p>
+</div>
+
+<h3>Hybrid Image Pipeline</h3>
+
+<table border=1>
+<tr>
+<td>
+<img src="cat.bmp" width="49.5%"/>
+<img src="dog.bmp"  width="49.5%"/>
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="high_frequencies.jpg"  width="49.5%"/>
+<img src="low_frequencies.jpg" width="49.5%"/>
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="hybrid_image_scales.jpg"  width="99%"/>
+</td>
+</tr>
+
+</table>
+
+<h3>Additional Examples of Hybrid Images</h3>
+
+<table border=1>
+<tr>
+<td>
+<img src="hybrid_image_scales_bird_plane.jpg" width="99%"/>
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="hybrid_image_scales_sub_fish.jpg" width="99%"/>
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="hybrid_image_scales_tiger_zebra.jpg" width="99%"/>
+</td>
+</tr>
+
+</table>
+
+
+</body>
+</html>
