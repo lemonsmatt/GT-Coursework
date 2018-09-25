@@ -136,70 +136,252 @@ table td img {
 <body>
 <div id="header" >
 <div id="headersub">
-<h1>Your Name</h1>
+<h1>Matthew Lemons</h1>
 </div>
 </div>
 <div class="container">
 
 <h2> Project 3 / Camera Calibration and Fundamental Matrix Estimation with RANSAC</h2>
 
-<div style="float: right; padding: 20px">
-<img src="placeholder.jpg" />
-<p style="font-size: 14px">Example of a right floating element.</p>
-</div>
+<h3> Part 1: Camera Projection Matrix</h3>
 
-<p> 	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 
-<ol>
-<li>list element 1.</li>
-<li>list element 2.</li>
-<li>etc.</li>
-</ol>
+<p> In part 1, the projection matrix was calculated using linear regression by fixing m34 to be one. The remaining values were calculated from there. The discovered matrix M using the given points is below.</p>
 
-<p> 	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-<div style="clear:both">
-<h3>Example heading</h3>
-
-<p> 	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-<h2>Example of code with highlighting</h2>
-The javascript in the <code>highlighting</code> folder is configured to do syntax highlighting in code blocks such as the one below.<p>
-
-<pre><code>
-%example code
-for i = 1:length(offset)
-    source = imread(sprintf('%s/source_%02d.jpg',data_dir,i));
-    mask   = imread(sprintf('%s/mask_%02d.jpg',data_dir,i));
-    target = imread(sprintf('%s/target_%02d.jpg',data_dir,i));
-
-</code></pre>
-
-<h3>Results in a table</h3>
-
-<table border=1>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" width="400">
 <tr>
-<td>
-<img src="placeholder.jpg" width="24%"/>
-<img src="placeholder.jpg"  width="24%"/>
-<img src="placeholder.jpg" width="24%"/>
-<img src="placeholder.jpg" width="24%"/>
-</td>
+    <td height="16" width="20%">0.7679</td>
+    <td height="16" width="20%">-0.4938</td>
+    <td height="16" width="20%">-0.0234</td>
+    <td height="16" width="20%">0.0067</td>
 </tr>
-
 <tr>
-<td>
-<img src="placeholder.jpg" width="24%"/>
-<img src="placeholder.jpg"  width="24%"/>
-<img src="placeholder.jpg" width="24%"/>
-<img src="placeholder.jpg" width="24%"/>
-</td>
+    <td height="16" width="20%">-0.0852</td>
+    <td height="16" width="20%">-0.0915</td>
+    <td height="16" width="20%">-0.9065</td>
+    <td height="16" width="20%">-0.0878</td>
 </tr>
-
+<tr>
+    <td height="16" width="20%">0.1827</td>
+    <td height="16" width="20%">0.2988</td>
+    <td height="16" width="20%">-0.0742</td>
+    <td height="16" width="20%">1.0000</td>
+</tr>
 </table>
 
-<div style="clear:both" >
-<p> 	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-</div>
+Using this the center of the camera was found to be  <-1.5126, -2.3517, 0.2827> 
+
+
+<h3> Part 2: Fundamental Matrix Estimation</h3>
+
+<p>		Using single value decomposition given corresponding points, F was calculated. Single value decomposition was done again to reduce the rank to 2. These two steps were done with the built in matlab SVD() function. The calculated fundamental matrix for the given set of points is below. </p>
+
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" width="400">
+<tr>
+    <td height="16" width="20%">-0.0000</td>
+    <td height="16" width="20%">0.0000</td>
+    <td height="16" width="20%">-0.0019</td>
+</tr>
+<tr>
+    <td height="16" width="20%">0.0000</td>
+    <td height="16" width="20%">0.0000</td>
+    <td height="16" width="20%">0.0172</td>
+</tr>
+<tr>
+    <td height="16" width="20%">-0.0009</td>
+    <td height="16" width="20%">-0.0264</td>
+    <td height="16" width="20%">0.9995</td>
+</tr>
+</table>
+
+Using this matrix, the epipolar lines below were drawn
+
+<table border=0>
+<tr>
+<td>
+<img src="part2_1.jpg" width="49.5%"/>
+<img src="part2_2.jpg" width="49.5%"/>
+</td>
+</tr>
+</table>
+
+
+<h3> Part 3: Fundamental Matrix with RANSAC</h3>
+
+
+<p>		RANSAC involves randomly sampling some N number of points from the input. Then a fundamental matrix is estimated from these points. It is then checked against all points to see how many points fit this estimated points. These points are marked as inliers. Inliers are calculated using the innate property of the fundamental matrices that x*F*x' = 0 thus any deviation from this property can be used as the distance from the truth. This algorithm has 3 values that can be played with to produce better results. The sample size which should be set to the size required to fit a model. The second is the number of iterations which will be in the thousands. The final is the inlier distance. These inlier pairs become the final corresponding points. This cleans up the corresponce. Below is a run of the algorithm on the Mount Rushmore images </p>
+
+
+<table border=0 >
+<tr>
+<td>
+<img src="mountRushmore.jpg" width="99%"/>
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="mountRushmore2.jpg" width="99%"/>
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="mountRushmoreLines.jpg" width="49.5%"/>
+<img src="mountRushmoreLines2.jpg" width="49.5%"/>
+</td>
+</tr>
+</table>
+
+
+<h3> Additional Examples</h3>
+
+<h4> Notre Dame</h4>
+<table border=0 >
+<tr>
+<td>
+<img src="notreDame.jpg" width="99%"/>
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="notreDame2.jpg" width="99%"/>
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="notreDameLines.jpg" width="49.5%"/>
+<img src="notreDameLines2.jpg" width="49.5%"/>
+</td>
+</tr>
+</table>
+
+<h4> Gaudi</h4>
+<table border=0 >
+<tr>
+<td>
+<img src="gaudi.jpg" width="99%"/>
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="gaudi2.jpg" width="99%"/>
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="gaudiLines.jpg" width="49.5%"/>
+<img src="gaudiLines2.jpg" width="49.5%"/>
+</td>
+</tr>
+</table>
+
+<h4> Woodruff Dorm</h4>
+<table border=0 >
+<tr>
+<td>
+<img src="woodruff.jpg" width="99%"/>
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="woodruff2.jpg" width="99%"/>
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="woodruffLines.jpg" width="49.5%"/>
+<img src="woodruffLines2.jpg" width="49.5%"/>
+</td>
+</tr>
+</table>
+
+<h3> Extra Credit</h3>
+
+<p> 	To improve the fundamental matrix estimate, the coordinates used to compute the matrix can be normalized before it. To do this, the mean was found for u and v. Lets call it c_u and c_v. A scale factor was found by subtracting the means from the coordinates then finding the standard deviation of all the offsetted coordinates. Finally s is set equal to the reciprocal of the standard deviations. Lets call these s_u and s_v. To find the normalized coordinate the matrix T was calculated as the following. </p>
+
+
+<p> T = [s_u, 0 ,0; 0, s_v, 0; 0, 0, 1] * [1, 0, -c_u; 0, 1, -c_v; 0, 0, 1]; </p>
+
+<p> Once calculated, the fundamental matrix must be converted back to normal coordinates by multipling the transpose of T_b by fundamental matrix by T_a. Examples of the improvement are below. Gaudi illustrates the improvements well as the number of outliers included can be visually seen to decrease</p>
+
+<h4> Mount Rushmore </h4>
+<table border=0 >
+<tr>
+<td height="16" width="99%">Without Normalization</td>
+</tr>
+<tr>
+<td>
+<img src="mountRushmore2.jpg" width="99%"/>
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="mountRushmoreLines.jpg" width="49.5%"/>
+<img src="mountRushmoreLines2.jpg" width="49.5%"/>
+</td>
+</tr>
+
+<tr>
+<td height="16" width="99%">With Normalization</td>
+</tr>
+<tr>
+<td>
+<img src="mountRushmore2Normal.jpg" width="99%"/>
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="mountRushmoreLinesNormal.jpg" width="49.5%"/>
+<img src="mountRushmoreLines2Normal.jpg" width="49.5%"/>
+</td>
+</tr>
+</table>
+
+<h4> Gaudi</h4>
+<table border=0 >
+<table border=0 >
+<tr>
+<td height="16" width="99%">Without Normalization</td>
+</tr>
+<tr>
+<td>
+<img src="gaudi2.jpg" width="99%"/>
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="gaudiLines.jpg" width="49.5%"/>
+<img src="gaudiLines2.jpg" width="49.5%"/>
+</td>
+</tr>
+
+<tr>
+<td height="16" width="99%">With Normalization</td>
+</tr>
+<tr>
+<td>
+<img src="gaudi2Normal.jpg" width="99%"/>
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="gaudiLinesNormal.jpg" width="49.5%"/>
+<img src="gaudiLines2Normal.jpg" width="49.5%"/>
+</td>
+</tr>
+</table>
+
 </body>
 </html>
+s

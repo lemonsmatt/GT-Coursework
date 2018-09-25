@@ -136,85 +136,71 @@ table td img {
 <body>
 <div id="header" >
 <div id="headersub">
-<h1>Your Name </h1>
+<h1>Matthew Lemons </h1>
 </div>
 </div>
 <div class="container">
 
 <h2> Project 5 / Face Detection with a Sliding Window</h2>
 
-<div style="float: right; padding: 20px">
-<img src="placeholder.jpg" />
-<p style="font-size: 14px">Example of a right floating element.</p>
-</div>
+<p> This detector is a pipeline of steps. First, a large sample of cropped face images are converted into HOG space is saved. Second, a large sample of images containing no faces is used to generate negative examples in the HOG space. However, to get a wide range of types of images, many different images are need. However, this would generate an unreasonable amount of data. To reduce the number of samples while maintaining the breadth, an equal number of random samples are taken from each negative image. Next a linear SVM is generated using the positive and negative HOG samples.  	</p>
 
-<p> 	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<center>
+<p> Face template HoG visualization </p>
+<img src="hog_template.png">
+</center>
 
-<ol>
-<li>list element 1.</li>
-<li>list element 2.</li>
-<li>etc.</li>
-</ol>
 
-<p> 	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<p> The final step is the actual sliding window detection. Each image is converted into HOG space. Each possible HOG feature per the feature parameters are pull and tested against the calculated SVM values. This gives a confidence value for each feature. These features are thresholded at some lower end of confidence to remove values that are clearly wrong. The feature represents a bounding box Finally non maximal suppression is run to remove overlapping bounding boxes. This produces about 43% average precision. To further improve precision, more HOG features can be pulled from scaled versions of the image. In this pipeline, the images are scaled using 0.7^n as the factor for n = 0,....,5. This was found to give the best results. After all the features are pulled, they are handed off to the non-maximal suppression as one unit for the image. This final pipeline achieves 91.3% average precision. As seen below, the threshold value greatly effects the number of false positives the pipeline has. Furthermore, the threshold value that works for one image is not necessarily strong enough for others. </p>
 
-<div style="clear:both">
-<h3>Example heading</h3>
+<center>
+<p>
+Precision Recall curve
+<p>
+<img src="average_precision.png">
+<p>
+</center>
 
-<p> 	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-<h2>Example of code with highlighting</h2>
-The javascript in the <code>highlighting</code> folder is configured to do syntax highlighting in code blocks such as the one below.<p>
-
-<pre><code>
-%example code
-for i = 1:length(offset)
-    source = imread(sprintf('%s/source_%02d.jpg',data_dir,i));
-    mask   = imread(sprintf('%s/mask_%02d.jpg',data_dir,i));
-    target = imread(sprintf('%s/target_%02d.jpg',data_dir,i));
-
-</code></pre>
-
-<h3>Results in a table</h3>
+<h3>Example Results</h3>
 
 <table border=1>
 <tr>
+<th> Loose Threshold</th>
+<th> Tight Threshold</th>
+</tr>
+<tr>
 <td>
-<img src="placeholder.jpg" width="24%"/>
-<img src="placeholder.jpg"  width="24%"/>
-<img src="placeholder.jpg" width="24%"/>
-<img src="placeholder.jpg" width="24%"/>
+<img src="detections_Argentina.jpg.png" width="99%"/>
+</td>
+<td>
+<img src="detections_Argentina_2.jpg.png" width="99%"/>
+
 </td>
 </tr>
 
 <tr>
 <td>
-<img src="placeholder.jpg" width="24%"/>
-<img src="placeholder.jpg"  width="24%"/>
-<img src="placeholder.jpg" width="24%"/>
-<img src="placeholder.jpg" width="24%"/>
+<img src="detections_albert.jpg.png"  width="99%"/>
+</td>
+<td>
+<img src="detections_albert_2.jpg.png"  width="99%"/>
+
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="detections_class57.jpg.png" width="99%"/>
+</td>
+<td>
+<img src="detections_class57_2.jpg.png" width="99%"/>
+
 </td>
 </tr>
 
 </table>
 
-<center>
-<p>
-Face template HoG visualization for the starter code. This is completely random, but it should actually look like a face once you train a reasonable classifier.
-<p>
-<img src="hog_template.png">
-<p>
-Precision Recall curve for the starter code.
-<p>
-<img src="average_precision.png">
-<p>
-Example of detection on the test set from the starter code.
-<img src="detections_Argentina.jpg.png">
+<img src="detections_4476_2017_class_easy.jpg.png"/>
 
-</center>
-
-<div style="clear:both" >
-<p> 	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-</div>
 </body>
 </html>

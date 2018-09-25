@@ -1,0 +1,6 @@
+To view report open index.html or go to 
+
+https://rawgit.com/lemonsmatt/GT-Coursework/master/CS%204476%20Computer%20Vision/proj4/html/index.html
+
+
+Precomputed features for bag of sift are included. Saving and loading these can be done by flipping the respective variables to true in get_bags_of_sifts. A step size of 8 was used for the saved ones. A step size of 15 runs in around 8 minutes but produces subpar results (~53%).
