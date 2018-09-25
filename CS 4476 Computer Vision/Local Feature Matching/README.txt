@@ -1,6 +1,6 @@
 To view report open index.html or go to 
 
-https://rawgit.com/lemonsmatt/GT-Coursework/master/CS%204476%20Computer%20Vision/Local%Feature%Matching/html/index.html
+https://rawgit.com/lemonsmatt/GT-Coursework/master/CS%204476%20Computer%20Vision/Local%20Feature%20Matching/html/index.html
 
 Image credits:
 Zion signs:
